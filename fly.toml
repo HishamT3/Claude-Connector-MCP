@@ -1,0 +1,26 @@
+# Fly.io config. Run `fly launch --no-deploy` to create the app, then set the
+# secret with `fly secrets set CLICKBANK_CLERK_KEY=... MCP_AUTH_TOKEN=...` and
+# `fly deploy`. Secrets are NEVER stored in this file.
+app = "clickbank-connector-mcp"
+primary_region = "sea"
+
+[build]
+  builder = "heroku/builder:24"
+
+[env]
+  CLICKBANK_ROLE = "vendor"
+  CLICKBANK_ANALYTICS_DIMENSION = "PRODUCT"
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/"
+    interval = "30s"
+    timeout = "5s"

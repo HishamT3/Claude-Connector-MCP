@@ -1,0 +1,22 @@
+# Render.com blueprint. Create a new Blueprint service pointed at this repo.
+# Set CLICKBANK_CLERK_KEY (and MCP_AUTH_TOKEN) as secret env vars in the
+# Render dashboard — do NOT put secrets in this file.
+services:
+  - type: web
+    name: clickbank-connector-mcp
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/index.js
+    healthCheckPath: /
+    envVars:
+      - key: CLICKBANK_CLERK_KEY
+        sync: false
+      - key: MCP_AUTH_TOKEN
+        sync: false
+      - key: CLICKBANK_ACCOUNT_NICKNAME
+        sync: false
+      - key: CLICKBANK_ROLE
+        value: vendor
+      - key: CLICKBANK_ANALYTICS_DIMENSION
+        value: PRODUCT
